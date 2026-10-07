@@ -3,166 +3,298 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f1eb">
-  <title>岡山・地點散策</title>
+  <meta name="theme-color" content="#f3f2ee">
+  <title>岡山大阪・公開行程</title>
   <style>
     :root {
       color-scheme: light;
-      --paper: #f4f1eb;
-      --card: #fffefa;
-      --ink: #202722;
-      --muted: #69736d;
-      --green: #315e4a;
-      --line: #d9dfd5;
-      --shadow: 0 14px 36px rgba(31, 48, 38, .08);
+      --paper: #f3f2ee;
+      --surface: rgba(255, 255, 255, .78);
+      --surface-strong: #fffefa;
+      --ink: #252624;
+      --muted: #73746f;
+      --soft: #e8e7e1;
+      --line: #deded7;
+      --green: #304f42;
+      --green-soft: #e5eee7;
+      --shadow: 0 16px 38px rgba(42, 48, 42, .08);
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       background:
-        radial-gradient(ellipse at 100% 0%, rgba(201, 218, 202, .38), transparent 34rem),
+        radial-gradient(ellipse at 100% 0%, rgba(209, 220, 208, .46), transparent 30rem),
         var(--paper);
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Hiragino Sans", sans-serif;
       line-height: 1.5;
     }
-    .page { width: min(100% - 28px, 680px); margin: 0 auto; padding: 24px 0 42px; }
-    .hero {
-      position: relative;
-      overflow: hidden;
-      min-height: 218px;
-      padding: 30px 27px;
-      border-radius: 30px;
-      color: #f8f5ec;
-      background: linear-gradient(135deg, #264b3c, #416d55 62%, #789174);
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .page { width: min(100% - 24px, 700px); margin: 0 auto; padding: 16px 0 34px; }
+    .topbar {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) 40px;
+      align-items: center;
+      min-height: 50px;
+      margin-bottom: 12px;
+    }
+    .topbar h1 { margin: 0; text-align: center; font-size: 17px; font-weight: 700; letter-spacing: .03em; }
+    .top-icon {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: var(--surface-strong);
+      color: var(--ink);
+      font-size: 20px;
+      box-shadow: 0 5px 16px rgba(42, 48, 42, .05);
+    }
+    .top-icon:last-child { justify-self: end; font-size: 17px; }
+    .intro {
+      padding: 23px 23px 21px;
+      border-radius: 27px;
+      background: var(--surface-strong);
       box-shadow: var(--shadow);
     }
-    .hero::before, .hero::after {
-      content: "";
-      position: absolute;
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 50%;
-      pointer-events: none;
+    .eyebrow { margin: 0 0 6px; color: var(--muted); font-size: 11px; font-weight: 750; letter-spacing: .17em; }
+    .intro-title { margin: 0; font-size: clamp(26px, 7vw, 38px); font-weight: 720; letter-spacing: .03em; }
+    .intro-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 11px; color: var(--muted); font-size: 13px; }
+    .public-pill { padding: 5px 10px; border-radius: 999px; background: var(--green-soft); color: var(--green); font-weight: 700; white-space: nowrap; }
+    .day-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 18px 2px 5px;
+      scrollbar-width: none;
     }
-    .hero::before { width: 310px; height: 310px; right: -108px; top: -156px; }
-    .hero::after { width: 215px; height: 215px; right: -62px; top: -107px; }
-    .eyebrow { margin: 0 0 13px; color: #d3dfcf; font-size: 12px; letter-spacing: .16em; }
-    h1 { position: relative; margin: 0; font-size: clamp(30px, 8vw, 46px); font-weight: 650; letter-spacing: .04em; }
-    .hero-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 26px; }
-    .hero-foot p { margin: 0; color: #e2e9dc; font-size: 14px; }
-    .count { flex: none; padding: 8px 13px; border: 1px solid rgba(255,255,255,.34); border-radius: 999px; font-size: 13px; }
-    .section-head { display: flex; align-items: end; justify-content: space-between; margin: 28px 4px 16px; }
-    .section-head h2 { margin: 0; font-size: 19px; letter-spacing: .04em; }
-    .section-head span { color: var(--muted); font-size: 12px; }
-    .places { position: relative; display: grid; gap: 12px; }
-    .places::before { content: ""; position: absolute; top: 31px; bottom: 31px; left: 24px; border-left: 1px dashed #bdc9bd; }
-    .place {
+    .day-tabs::-webkit-scrollbar { display: none; }
+    .day-tab {
+      flex: 0 0 auto;
+      min-width: 96px;
+      padding: 9px 14px 10px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--surface-strong);
+      color: #555852;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      text-align: left;
+      box-shadow: 0 4px 14px rgba(42, 48, 42, .04);
+    }
+    .day-tab strong { display: block; color: inherit; font-size: 13px; }
+    .day-tab span { display: block; margin-top: 1px; color: var(--muted); font-size: 11px; font-weight: 550; }
+    .day-tab[aria-selected="true"] { background: #20211f; color: #fff; }
+    .day-tab[aria-selected="true"] span { color: #d5d8d2; }
+    .day-tab:focus-visible, .map-link:focus-visible { outline: 3px solid #92b19a; outline-offset: 3px; }
+    .day-panel { margin-top: 13px; }
+    .day-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 7px 5px 13px;
+    }
+    .day-heading h2 { margin: 0; font-size: 19px; font-weight: 750; letter-spacing: .02em; }
+    .day-heading p { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+    .day-count { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .timeline {
       position: relative;
       display: grid;
-      grid-template-columns: 48px minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 12px;
-      min-height: 88px;
-      padding: 14px 14px 14px 10px;
-      border: 1px solid rgba(49, 94, 74, .08);
-      border-radius: 22px;
-      background: var(--card);
-      box-shadow: 0 8px 22px rgba(31, 48, 38, .045);
+      gap: 10px;
+      padding-bottom: 7px;
     }
-    .marker {
-      z-index: 1;
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 25px;
+      bottom: 25px;
+      left: 25px;
+      border-left: 1px dashed #c5c9c1;
+    }
+    .stop {
+      position: relative;
       display: grid;
-      width: 40px;
-      height: 40px;
-      place-items: center;
-      border: 5px solid var(--card);
-      border-radius: 50%;
-      background: #e8eee5;
-      color: var(--green);
-      font-size: 12px;
-      font-weight: 700;
-      box-shadow: 0 0 0 1px #d6e0d4;
-    }
-    .place h3 { margin: 0; font-size: 15px; font-weight: 620; line-height: 1.4; }
-    .map-link {
-      display: inline-flex;
+      grid-template-columns: 51px minmax(0, 1fr) 42px;
       align-items: center;
-      gap: 5px;
-      min-height: 38px;
-      padding: 0 11px;
-      border-radius: 999px;
-      background: #edf2eb;
-      color: #315e4a;
-      font-size: 12px;
-      font-weight: 650;
-      text-decoration: none;
-      white-space: nowrap;
+      gap: 10px;
+      min-height: 78px;
+      padding: 10px 10px 10px 6px;
+      border: 1px solid rgba(54, 66, 57, .07);
+      border-radius: 21px;
+      background: var(--surface-strong);
+      box-shadow: 0 8px 21px rgba(42, 48, 42, .045);
     }
-    .map-link:focus-visible { outline: 3px solid #87aa8e; outline-offset: 2px; }
-    footer { padding: 22px 4px 0; color: #798179; font-size: 12px; text-align: center; }
+    .stop-time { z-index: 1; display: grid; place-items: center; align-self: stretch; color: var(--green); font-size: 13px; font-weight: 760; }
+    .stop-time::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      width: 27px;
+      height: 27px;
+      border: 5px solid var(--surface-strong);
+      border-radius: 50%;
+      background: var(--green-soft);
+      box-shadow: 0 0 0 1px #d4ddd3;
+      z-index: -1;
+    }
+    .stop-body { min-width: 0; }
+    .stop-name { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.35; }
+    .stop-category { display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .category-icon { display: inline-grid; width: 19px; height: 19px; place-items: center; border-radius: 50%; background: #f0f1ed; color: var(--green); font-size: 11px; font-weight: 800; }
+    .map-link {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 50%;
+      background: #20211f;
+      color: #fff;
+      font-size: 17px;
+      text-decoration: none;
+    }
+    footer { padding: 20px 4px 0; color: #858780; font-size: 11px; text-align: center; }
     @media (min-width: 560px) {
-      .page { padding-top: 38px; }
-      .hero { min-height: 255px; padding: 38px 38px; }
-      .place { grid-template-columns: 54px minmax(0, 1fr) auto; padding: 17px 18px 17px 12px; }
-      .place h3 { font-size: 17px; }
+      .page { padding-top: 28px; }
+      .intro { padding: 28px 30px 25px; }
+      .stop { grid-template-columns: 58px minmax(0, 1fr) 44px; padding-right: 14px; }
+      .stop-name { font-size: 16px; }
     }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="hero">
-      <p class="eyebrow">OKAYAMA · PLACES</p>
-      <h1>岡山散策</h1>
-      <div class="hero-foot">
-        <p>收藏在地圖上的幾個地方</p>
-        <span class="count" id="place-count"></span>
-      </div>
+    <header class="topbar" aria-label="公開行程標題列">
+      <span class="top-icon" aria-hidden="true">‹</span>
+      <h1>公開行程</h1>
+      <span class="top-icon" aria-hidden="true">⌖</span>
     </header>
 
-    <section aria-labelledby="places-title">
-      <div class="section-head">
-        <h2 id="places-title">地點</h2>
-        <span>點開地圖繼續探索</span>
+    <section class="intro" aria-labelledby="trip-title">
+      <p class="eyebrow">OKAYAMA · OSAKA</p>
+      <h2 class="intro-title" id="trip-title">岡山大阪</h2>
+      <div class="intro-meta">
+        <span>2026/10/18 — 10/24</span>
+        <span class="public-pill">朋友檢視</span>
       </div>
-      <div class="places" id="places"></div>
     </section>
-    <footer>岡山 · 地點散策</footer>
+
+    <nav class="day-tabs" id="day-tabs" aria-label="行程天數"></nav>
+    <section class="day-panel" id="day-panel" aria-live="polite"></section>
+    <footer>由 TREK 行程分享</footer>
   </main>
 
   <script>
-    const places = [
-      { name: "岡山 桃太郎機場", placeId: "ChIJa2konp4DVDURCbtFf9tz9bM" },
-      { name: "岡山 東橫INN 岡山車站東口", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" },
-      { name: "岡山 味司野村", placeId: "ChIJExtR8UkGVDUR8otU2Ytg350" },
-      { name: "岡山 日式居酒屋 Akari", placeId: "ChIJi7k86EkGVDURRzRQjBNFMR4" },
-      { name: "岡山 AEON STYLE", placeId: "ChIJ64-LxY0HVDURgSUxSxRo4q8" }
+    const categoryLabels = {
+      Transport: { label: "交通", icon: "✈" },
+      Hotel: { label: "住宿", icon: "⌂" },
+      Restaurant: { label: "餐廳", icon: "◒" },
+      Activity: { label: "景點", icon: "✦" },
+      Shopping: { label: "購物", icon: "▢" }
+    };
+
+    const days = [
+      {
+        number: 1,
+        date: "2026-10-18",
+        title: "初訪岡山",
+        stops: [
+          { time: "15:05", name: "岡山 桃太郎機場", category: "Transport", placeId: "ChIJa2konp4DVDURCbtFf9tz9bM" },
+          { time: "18:35", name: "岡山 東橫INN 岡山車站東口", category: "Hotel", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" },
+          { time: "19:15", name: "岡山 味司野村", category: "Restaurant", placeId: "ChIJExtR8UkGVDUR8otU2Ytg350" },
+          { time: "19:45", name: "岡山 日式居酒屋 Akari", category: "Restaurant", placeId: "ChIJi7k86EkGVDURRzRQjBNFMR4" },
+          { time: "20:30", name: "岡山 AEON STYLE", category: "Shopping", placeId: "ChIJ64-LxY0HVDURgSUxSxRo4q8" },
+          { time: "21:40", name: "岡山 東橫INN 岡山車站東口", category: "Hotel", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" }
+        ]
+      },
+      {
+        number: 2,
+        date: "2026-10-19",
+        title: "倉敷美觀＋三井 OUTLET",
+        stops: [
+          { time: "09:00", name: "岡山 東橫INN 岡山車站東口", category: "Hotel", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" },
+          { time: "09:40", name: "倉敷 阿智神社", category: "Activity", placeId: "ChIJm4wn0DhWUTURnE-3zlklpf8" },
+          { time: "10:15", name: "倉敷 美觀地區", category: "Activity", placeId: "ChIJ1do4lkdWUTURvg3rFkFpzhE" },
+          { time: "11:25", name: "倉敷 有鄰庵 岡山希少和牛店", category: "Restaurant", placeId: "ChIJBV4HAPZXUTURH26f3sE55mA" },
+          { time: "12:35", name: "倉敷 美觀地區", category: "Activity", placeId: "ChIJ1do4lkdWUTURvg3rFkFpzhE" },
+          { time: "13:55", name: "倉敷 三井 OUTLET", category: "Shopping", placeId: "ChIJc7EQr1xWUTURZ0IX8YyTBjQ" },
+          { time: "19:35", name: "岡山 東橫INN 岡山車站東口", category: "Hotel", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" }
+        ]
+      }
     ];
 
-    const container = document.querySelector("#places");
-    document.querySelector("#place-count").textContent = `${places.length} 個地點`;
-    for (const [index, place] of places.entries()) {
-      const item = document.createElement("article");
-      item.className = "place";
+    const categoryLabel = (category) => categoryLabels[category] || { label: "地點", icon: "•" };
+    const dateLabel = (date) => new Intl.DateTimeFormat("zh-TW", { month: "numeric", day: "numeric", weekday: "short" }).format(new Date(`${date}T12:00:00`));
+    const tabs = document.querySelector("#day-tabs");
+    const panel = document.querySelector("#day-panel");
 
-      const marker = document.createElement("span");
-      marker.className = "marker";
-      marker.setAttribute("aria-hidden", "true");
-      marker.textContent = String(index + 1).padStart(2, "0");
-
-      const heading = document.createElement("h3");
-      heading.textContent = place.name;
-
-      const link = document.createElement("a");
-      link.className = "map-link";
-      link.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}&query_place_id=${place.placeId}`;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.setAttribute("aria-label", `在 Google 地圖開啟：${place.name}`);
-      link.textContent = "地圖 ↗";
-
-      item.append(marker, heading, link);
-      container.append(item);
+    function renderTabs(activeNumber) {
+      tabs.replaceChildren();
+      for (const day of days) {
+        const tab = document.createElement("button");
+        tab.className = "day-tab";
+        tab.type = "button";
+        tab.setAttribute("aria-selected", String(day.number === activeNumber));
+        tab.setAttribute("aria-controls", "day-panel");
+        tab.innerHTML = `<strong>第${day.number}天</strong><span>${dateLabel(day.date)}</span>`;
+        tab.addEventListener("click", () => {
+          window.location.hash = `day-${day.number}`;
+          render(day.number);
+        });
+        tabs.append(tab);
+      }
     }
+
+    function render(activeNumber) {
+      const day = days.find((item) => item.number === activeNumber) || days[0];
+      renderTabs(day.number);
+      panel.replaceChildren();
+
+      const heading = document.createElement("div");
+      heading.className = "day-heading";
+      heading.innerHTML = `<div><h2>第${day.number}天・${day.title}</h2><p>${dateLabel(day.date)}</p></div><span class="day-count">${day.stops.length} 個地點</span>`;
+      panel.append(heading);
+
+      const timeline = document.createElement("div");
+      timeline.className = "timeline";
+      for (const stop of day.stops) {
+        const category = categoryLabel(stop.category);
+        const item = document.createElement("article");
+        item.className = "stop";
+
+        const time = document.createElement("time");
+        time.className = "stop-time";
+        time.textContent = stop.time;
+
+        const body = document.createElement("div");
+        body.className = "stop-body";
+        const name = document.createElement("h3");
+        name.className = "stop-name";
+        name.textContent = stop.name;
+        const type = document.createElement("span");
+        type.className = "stop-category";
+        type.innerHTML = `<span class="category-icon" aria-hidden="true">${category.icon}</span>${category.label}`;
+        body.append(name, type);
+
+        const map = document.createElement("a");
+        map.className = "map-link";
+        map.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stop.name)}&query_place_id=${stop.placeId}`;
+        map.target = "_blank";
+        map.rel = "noopener noreferrer";
+        map.setAttribute("aria-label", `在 Google Maps 開啟：${stop.name}`);
+        map.textContent = "↗";
+
+        item.append(time, body, map);
+        timeline.append(item);
+      }
+      panel.append(timeline);
+    }
+
+    const hashNumber = Number(window.location.hash.match(/day-(\d+)/)?.[1]);
+    render(days.some((day) => day.number === hashNumber) ? hashNumber : 1);
   </script>
 </body>
 </html>
