@@ -4,297 +4,143 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f3f2ee">
-  <title>岡山大阪・公開行程</title>
+  <title>旅程｜公開分享</title>
   <style>
     :root {
       color-scheme: light;
       --paper: #f3f2ee;
-      --surface: rgba(255, 255, 255, .78);
-      --surface-strong: #fffefa;
       --ink: #252624;
-      --muted: #73746f;
-      --soft: #e8e7e1;
-      --line: #deded7;
-      --green: #304f42;
-      --green-soft: #e5eee7;
-      --shadow: 0 16px 38px rgba(42, 48, 42, .08);
+      --muted: #777871;
+      --glass: rgba(255, 255, 255, .74);
+      --line: rgba(38, 41, 37, .09);
+      --shadow: 0 22px 55px rgba(43, 47, 42, .12);
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { min-height: 100%; }
     body {
+      min-height: 100vh;
       margin: 0;
       background:
-        radial-gradient(ellipse at 100% 0%, rgba(209, 220, 208, .46), transparent 30rem),
+        radial-gradient(ellipse at 0% 0%, rgba(219, 225, 216, .8), transparent 30rem),
+        radial-gradient(ellipse at 100% 72%, rgba(236, 218, 205, .55), transparent 28rem),
         var(--paper);
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Hiragino Sans", sans-serif;
       line-height: 1.5;
     }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    .page { width: min(100% - 24px, 700px); margin: 0 auto; padding: 16px 0 34px; }
+    a { color: inherit; -webkit-tap-highlight-color: transparent; }
+    .page { width: min(100% - 32px, 760px); margin: 0 auto; padding: 22px 0 46px; }
     .topbar {
-      display: grid;
-      grid-template-columns: 40px minmax(0, 1fr) 40px;
+      display: flex;
       align-items: center;
-      min-height: 50px;
-      margin-bottom: 12px;
-    }
-    .topbar h1 { margin: 0; text-align: center; font-size: 17px; font-weight: 700; letter-spacing: .03em; }
-    .top-icon {
-      display: grid;
-      width: 38px;
-      height: 38px;
-      place-items: center;
-      border: 0;
-      border-radius: 50%;
-      background: var(--surface-strong);
-      color: var(--ink);
-      font-size: 20px;
-      box-shadow: 0 5px 16px rgba(42, 48, 42, .05);
-    }
-    .top-icon:last-child { justify-self: end; font-size: 17px; }
-    .intro {
-      padding: 23px 23px 21px;
-      border-radius: 27px;
-      background: var(--surface-strong);
-      box-shadow: var(--shadow);
-    }
-    .eyebrow { margin: 0 0 6px; color: var(--muted); font-size: 11px; font-weight: 750; letter-spacing: .17em; }
-    .intro-title { margin: 0; font-size: clamp(26px, 7vw, 38px); font-weight: 720; letter-spacing: .03em; }
-    .intro-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 11px; color: var(--muted); font-size: 13px; }
-    .public-pill { padding: 5px 10px; border-radius: 999px; background: var(--green-soft); color: var(--green); font-weight: 700; white-space: nowrap; }
-    .day-tabs {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 18px 2px 5px;
-      scrollbar-width: none;
-    }
-    .day-tabs::-webkit-scrollbar { display: none; }
-    .day-tab {
-      flex: 0 0 auto;
-      min-width: 96px;
-      padding: 9px 14px 10px;
-      border: 0;
-      border-radius: 999px;
-      background: var(--surface-strong);
-      color: #555852;
-      font: inherit;
-      font-size: 13px;
-      font-weight: 650;
-      text-align: left;
-      box-shadow: 0 4px 14px rgba(42, 48, 42, .04);
-    }
-    .day-tab strong { display: block; color: inherit; font-size: 13px; }
-    .day-tab span { display: block; margin-top: 1px; color: var(--muted); font-size: 11px; font-weight: 550; }
-    .day-tab[aria-selected="true"] { background: #20211f; color: #fff; }
-    .day-tab[aria-selected="true"] span { color: #d5d8d2; }
-    .day-tab:focus-visible, .map-link:focus-visible { outline: 3px solid #92b19a; outline-offset: 3px; }
-    .day-panel { margin-top: 13px; }
-    .day-heading {
-      display: flex;
-      align-items: end;
       justify-content: space-between;
-      gap: 14px;
-      padding: 7px 5px 13px;
+      min-height: 48px;
+      margin-bottom: 48px;
     }
-    .day-heading h2 { margin: 0; font-size: 19px; font-weight: 750; letter-spacing: .02em; }
-    .day-heading p { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
-    .day-count { color: var(--muted); font-size: 12px; white-space: nowrap; }
-    .timeline {
-      position: relative;
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 760; letter-spacing: .1em; }
+    .brand-mark {
       display: grid;
-      gap: 10px;
-      padding-bottom: 7px;
-    }
-    .timeline::before {
-      content: "";
-      position: absolute;
-      top: 25px;
-      bottom: 25px;
-      left: 25px;
-      border-left: 1px dashed #c5c9c1;
-    }
-    .stop {
-      position: relative;
-      display: grid;
-      grid-template-columns: 51px minmax(0, 1fr) 42px;
-      align-items: center;
-      gap: 10px;
-      min-height: 78px;
-      padding: 10px 10px 10px 6px;
-      border: 1px solid rgba(54, 66, 57, .07);
-      border-radius: 21px;
-      background: var(--surface-strong);
-      box-shadow: 0 8px 21px rgba(42, 48, 42, .045);
-    }
-    .stop-time { z-index: 1; display: grid; place-items: center; align-self: stretch; color: var(--green); font-size: 13px; font-weight: 760; }
-    .stop-time::before {
-      content: "";
-      position: absolute;
-      left: 12px;
-      width: 27px;
-      height: 27px;
-      border: 5px solid var(--surface-strong);
-      border-radius: 50%;
-      background: var(--green-soft);
-      box-shadow: 0 0 0 1px #d4ddd3;
-      z-index: -1;
-    }
-    .stop-body { min-width: 0; }
-    .stop-name { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.35; }
-    .stop-category { display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; color: var(--muted); font-size: 12px; }
-    .category-icon { display: inline-grid; width: 19px; height: 19px; place-items: center; border-radius: 50%; background: #f0f1ed; color: var(--green); font-size: 11px; font-weight: 800; }
-    .map-link {
-      display: grid;
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       place-items: center;
-      border-radius: 50%;
-      background: #20211f;
+      border-radius: 12px;
+      background: #171817;
       color: #fff;
-      font-size: 17px;
+      font-size: 16px;
+      box-shadow: 0 8px 18px rgba(20, 22, 20, .16);
+    }
+    .top-note { color: var(--muted); font-size: 12px; letter-spacing: .08em; }
+    .hero { margin-bottom: 30px; }
+    .eyebrow { margin: 0 0 9px; color: var(--muted); font-size: 11px; font-weight: 760; letter-spacing: .18em; }
+    h1 { margin: 0; font-size: clamp(32px, 8vw, 52px); font-weight: 760; letter-spacing: .02em; line-height: 1.1; }
+    .lead { max-width: 31em; margin: 13px 0 0; color: var(--muted); font-size: 14px; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin: 0 2px 13px; }
+    .section-title { margin: 0; font-size: 14px; font-weight: 760; letter-spacing: .06em; }
+    .section-count { color: var(--muted); font-size: 12px; }
+    .trip-card {
+      position: relative;
+      display: block;
+      min-height: 420px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .78);
+      border-radius: 30px;
+      background: #493c3b;
+      box-shadow: var(--shadow);
       text-decoration: none;
+      isolation: isolate;
+      transition: transform .22s ease, box-shadow .22s ease;
     }
-    footer { padding: 20px 4px 0; color: #858780; font-size: 11px; text-align: center; }
-    @media (min-width: 560px) {
-      .page { padding-top: 28px; }
-      .intro { padding: 28px 30px 25px; }
-      .stop { grid-template-columns: 58px minmax(0, 1fr) 44px; padding-right: 14px; }
-      .stop-name { font-size: 16px; }
+    .trip-card:hover { transform: translateY(-3px); box-shadow: 0 28px 62px rgba(43, 47, 42, .18); }
+    .trip-card:focus-visible { outline: 3px solid rgba(44, 75, 63, .45); outline-offset: 4px; }
+    .trip-cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -2; }
+    .trip-fallback { position: absolute; inset: 0; z-index: -3; background: linear-gradient(135deg, #273f37, #d37a52 52%, #5c2544); }
+    .trip-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(180deg, rgba(20, 24, 22, .08) 25%, rgba(29, 19, 23, .06) 42%, rgba(25, 16, 25, .82) 100%);
     }
+    .card-top { display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 0; }
+    .public-badge { padding: 7px 11px; border: 1px solid rgba(255, 255, 255, .32); border-radius: 999px; background: rgba(20, 23, 21, .28); color: #fff; font-size: 11px; font-weight: 720; letter-spacing: .08em; backdrop-filter: blur(12px); }
+    .card-arrow { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 50%; background: rgba(15, 16, 15, .74); color: #fff; font-size: 22px; line-height: 1; }
+    .card-copy { position: absolute; right: 20px; bottom: 20px; left: 20px; padding: 19px 20px 18px; border: 1px solid rgba(255, 255, 255, .2); border-radius: 22px; background: linear-gradient(110deg, rgba(68, 28, 34, .86), rgba(38, 27, 38, .75)); color: #fff; box-shadow: 0 10px 25px rgba(20, 16, 22, .14); backdrop-filter: blur(13px); }
+    .card-kicker { margin: 0 0 7px; color: rgba(255, 255, 255, .74); font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+    .card-title { margin: 0; font-size: clamp(24px, 6vw, 36px); font-weight: 760; letter-spacing: .02em; line-height: 1.15; }
+    .card-meta { display: flex; flex-wrap: wrap; gap: 7px 14px; margin-top: 11px; color: rgba(255, 255, 255, .83); font-size: 13px; }
+    .card-meta span { display: inline-flex; align-items: center; gap: 6px; }
+    .card-meta span::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: rgba(255, 255, 255, .7); }
+    .hint { margin: 18px 3px 0; color: var(--muted); font-size: 12px; }
+    footer { margin-top: 42px; padding-top: 17px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; letter-spacing: .03em; }
+    @media (max-width: 520px) {
+      .page { width: min(100% - 24px, 760px); padding-top: 15px; }
+      .topbar { margin-bottom: 39px; }
+      .trip-card { min-height: 430px; border-radius: 26px; }
+      .card-copy { right: 14px; bottom: 14px; left: 14px; padding: 17px 17px 16px; border-radius: 20px; }
+      .card-top { padding: 16px 14px 0; }
+      .card-arrow { width: 38px; height: 38px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .trip-card { transition: none; } }
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="topbar" aria-label="公開行程標題列">
-      <span class="top-icon" aria-hidden="true">‹</span>
-      <h1>公開行程</h1>
-      <span class="top-icon" aria-hidden="true">⌖</span>
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">⌁</span><span>TRAVEL SHARED</span></div>
+      <span class="top-note">公開旅程</span>
     </header>
 
-    <section class="intro" aria-labelledby="trip-title">
-      <p class="eyebrow">OKAYAMA · OSAKA</p>
-      <h2 class="intro-title" id="trip-title">岡山大阪</h2>
-      <div class="intro-meta">
-        <span>2026/10/18 — 10/24</span>
-        <span class="public-pill">朋友檢視</span>
-      </div>
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">MY JOURNEYS</p>
+      <h1 id="page-title">旅程</h1>
+      <p class="lead">選一趟旅程，查看已整理好的行程表。</p>
     </section>
 
-    <nav class="day-tabs" id="day-tabs" aria-label="行程天數"></nav>
-    <section class="day-panel" id="day-panel" aria-live="polite"></section>
-    <footer>由 TREK 行程分享</footer>
+    <section aria-labelledby="trip-list-title">
+      <div class="section-head">
+        <h2 id="trip-list-title" class="section-title">可查看的旅程</h2>
+        <span class="section-count">1 個旅程</span>
+      </div>
+      <a class="trip-card" href="./trips/2026-10-okayama-osaka/" aria-label="開啟 2026-10 岡山大阪公開行程">
+        <span class="trip-fallback" aria-hidden="true"></span>
+        <img class="trip-cover" src="./assets/okayama-osaka-cover.png" alt="岡山與大阪秋日風景" decoding="async">
+        <div class="card-top">
+          <span class="public-badge">公開分享</span>
+          <span class="card-arrow" aria-hidden="true">›</span>
+        </div>
+        <div class="card-copy">
+          <p class="card-kicker">OKAYAMA · OSAKA</p>
+          <h2 class="card-title">2026-10 岡山大阪</h2>
+          <div class="card-meta">
+            <span>2026.10.18 — 2026.10.24</span>
+            <span>7 天行程</span>
+          </div>
+        </div>
+      </a>
+      <p class="hint">點選旅程卡片即可查看日期、時間軸、地點分類與 Google Maps。</p>
+    </section>
+
+    <footer>這是唯讀的公開分享頁，不會連線讀取你的私人 TREK 資料。</footer>
   </main>
-
-  <script>
-    const categoryLabels = {
-      Transport: { label: "交通", icon: "✈" },
-      Hotel: { label: "住宿", icon: "⌂" },
-      Restaurant: { label: "餐廳", icon: "◒" },
-      Activity: { label: "景點", icon: "✦" },
-      Shopping: { label: "購物", icon: "▢" }
-    };
-
-    const days = [
-      {
-        number: 1,
-        date: "2026-10-18",
-        title: "初訪岡山",
-        stops: [
-          { time: "15:05", name: "岡山 桃太郎機場", category: "Transport", placeId: "ChIJa2konp4DVDURCbtFf9tz9bM" },
-          { time: "18:35", name: "岡山 東橫INN 岡山車站東口", category: "Hotel", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" },
-          { time: "19:15", name: "岡山 味司野村", category: "Restaurant", placeId: "ChIJExtR8UkGVDUR8otU2Ytg350" },
-          { time: "19:45", name: "岡山 日式居酒屋 Akari", category: "Restaurant", placeId: "ChIJi7k86EkGVDURRzRQjBNFMR4" },
-          { time: "20:30", name: "岡山 AEON STYLE", category: "Shopping", placeId: "ChIJ64-LxY0HVDURgSUxSxRo4q8" },
-          { time: "21:40", name: "岡山 東橫INN 岡山車站東口", category: "Hotel", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" }
-        ]
-      },
-      {
-        number: 2,
-        date: "2026-10-19",
-        title: "倉敷美觀＋三井 OUTLET",
-        stops: [
-          { time: "09:00", name: "岡山 東橫INN 岡山車站東口", category: "Hotel", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" },
-          { time: "09:40", name: "倉敷 阿智神社", category: "Activity", placeId: "ChIJm4wn0DhWUTURnE-3zlklpf8" },
-          { time: "10:15", name: "倉敷 美觀地區", category: "Activity", placeId: "ChIJ1do4lkdWUTURvg3rFkFpzhE" },
-          { time: "11:25", name: "倉敷 有鄰庵 岡山希少和牛店", category: "Restaurant", placeId: "ChIJBV4HAPZXUTURH26f3sE55mA" },
-          { time: "12:35", name: "倉敷 美觀地區", category: "Activity", placeId: "ChIJ1do4lkdWUTURvg3rFkFpzhE" },
-          { time: "13:55", name: "倉敷 三井 OUTLET", category: "Shopping", placeId: "ChIJc7EQr1xWUTURZ0IX8YyTBjQ" },
-          { time: "19:35", name: "岡山 東橫INN 岡山車站東口", category: "Hotel", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" }
-        ]
-      }
-    ];
-
-    const categoryLabel = (category) => categoryLabels[category] || { label: "地點", icon: "•" };
-    const dateLabel = (date) => new Intl.DateTimeFormat("zh-TW", { month: "numeric", day: "numeric", weekday: "short" }).format(new Date(`${date}T12:00:00`));
-    const tabs = document.querySelector("#day-tabs");
-    const panel = document.querySelector("#day-panel");
-
-    function renderTabs(activeNumber) {
-      tabs.replaceChildren();
-      for (const day of days) {
-        const tab = document.createElement("button");
-        tab.className = "day-tab";
-        tab.type = "button";
-        tab.setAttribute("aria-selected", String(day.number === activeNumber));
-        tab.setAttribute("aria-controls", "day-panel");
-        tab.innerHTML = `<strong>第${day.number}天</strong><span>${dateLabel(day.date)}</span>`;
-        tab.addEventListener("click", () => {
-          window.location.hash = `day-${day.number}`;
-          render(day.number);
-        });
-        tabs.append(tab);
-      }
-    }
-
-    function render(activeNumber) {
-      const day = days.find((item) => item.number === activeNumber) || days[0];
-      renderTabs(day.number);
-      panel.replaceChildren();
-
-      const heading = document.createElement("div");
-      heading.className = "day-heading";
-      heading.innerHTML = `<div><h2>第${day.number}天・${day.title}</h2><p>${dateLabel(day.date)}</p></div><span class="day-count">${day.stops.length} 個地點</span>`;
-      panel.append(heading);
-
-      const timeline = document.createElement("div");
-      timeline.className = "timeline";
-      for (const stop of day.stops) {
-        const category = categoryLabel(stop.category);
-        const item = document.createElement("article");
-        item.className = "stop";
-
-        const time = document.createElement("time");
-        time.className = "stop-time";
-        time.textContent = stop.time;
-
-        const body = document.createElement("div");
-        body.className = "stop-body";
-        const name = document.createElement("h3");
-        name.className = "stop-name";
-        name.textContent = stop.name;
-        const type = document.createElement("span");
-        type.className = "stop-category";
-        type.innerHTML = `<span class="category-icon" aria-hidden="true">${category.icon}</span>${category.label}`;
-        body.append(name, type);
-
-        const map = document.createElement("a");
-        map.className = "map-link";
-        map.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stop.name)}&query_place_id=${stop.placeId}`;
-        map.target = "_blank";
-        map.rel = "noopener noreferrer";
-        map.setAttribute("aria-label", `在 Google Maps 開啟：${stop.name}`);
-        map.textContent = "↗";
-
-        item.append(time, body, map);
-        timeline.append(item);
-      }
-      panel.append(timeline);
-    }
-
-    const hashNumber = Number(window.location.hash.match(/day-(\d+)/)?.[1]);
-    render(days.some((day) => day.number === hashNumber) ? hashNumber : 1);
-  </script>
 </body>
 </html>
