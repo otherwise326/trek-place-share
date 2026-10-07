@@ -131,11 +131,11 @@
 
   <script>
     const places = [
-      { name: "岡山 桃太郎機場", lat: 34.7579784, lng: 133.8558042 },
-      { name: "岡山 東橫INN 岡山車站東口", lat: 34.6664995, lng: 133.9209635 },
-      { name: "岡山 味司野村", lat: 34.6651858, lng: 133.9238217 },
-      { name: "岡山 日式居酒屋 Akari", lat: 34.6658675, lng: 133.9239195 },
-      { name: "岡山 AEON STYLE", lat: 34.6622566, lng: 133.917743 }
+      { name: "岡山 桃太郎機場", placeId: "ChIJa2konp4DVDURCbtFf9tz9bM" },
+      { name: "岡山 東橫INN 岡山車站東口", placeId: "ChIJ96svXEkGVDURM_TEWpgD16U" },
+      { name: "岡山 味司野村", placeId: "ChIJExtR8UkGVDUR8otU2Ytg350" },
+      { name: "岡山 日式居酒屋 Akari", placeId: "ChIJi7k86EkGVDURRzRQjBNFMR4" },
+      { name: "岡山 AEON STYLE", placeId: "ChIJ64-LxY0HVDURgSUxSxRo4q8" }
     ];
 
     const container = document.querySelector("#places");
@@ -154,7 +154,7 @@
 
       const link = document.createElement("a");
       link.className = "map-link";
-      link.href = `https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lng}`;
+      link.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}&query_place_id=${place.placeId}`;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       link.setAttribute("aria-label", `在 Google 地圖開啟：${place.name}`);
