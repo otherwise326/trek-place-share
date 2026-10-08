@@ -20,7 +20,7 @@
       --shadow: 0 16px 38px rgba(42, 48, 42, .08);
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 132px; }
     body {
       margin: 0;
       background:
@@ -31,15 +31,19 @@
       line-height: 1.5;
     }
     button, a { -webkit-tap-highlight-color: transparent; }
-    .page { width: min(100% - 24px, 700px); margin: 0 auto; padding: 16px 0 34px; }
+    .page { width: min(100% - 24px, 700px); margin: 0 auto; padding: 0 0 34px; }
     .topbar {
-      display: grid;
-      grid-template-columns: 40px minmax(0, 1fr) 40px;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
       align-items: center;
-      min-height: 50px;
-      margin-bottom: 12px;
+      min-height: 58px;
+      padding: 10px 0;
+      background: rgba(243, 242, 238, .9);
+      backdrop-filter: blur(16px);
     }
-    .topbar h1 { margin: 0; text-align: center; font-size: 17px; font-weight: 700; letter-spacing: .03em; }
+    .topbar h1 { position: absolute; left: 50%; margin: 0; transform: translateX(-50%); font-size: 17px; font-weight: 700; letter-spacing: .03em; }
     .top-icon {
       display: grid;
       width: 38px;
@@ -51,24 +55,22 @@
       color: var(--ink);
       font-size: 20px;
       box-shadow: 0 5px 16px rgba(42, 48, 42, .05);
+      text-decoration: none;
     }
-    .top-icon:last-child { justify-self: end; font-size: 17px; }
-    .intro {
-      padding: 23px 23px 21px;
-      border-radius: 27px;
-      background: var(--surface-strong);
-      box-shadow: var(--shadow);
-    }
-    .eyebrow { margin: 0 0 6px; color: var(--muted); font-size: 11px; font-weight: 750; letter-spacing: .17em; }
-    .intro-title { margin: 0; font-size: clamp(26px, 7vw, 38px); font-weight: 720; letter-spacing: .03em; }
-    .intro-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 11px; color: var(--muted); font-size: 13px; }
-    .public-pill { padding: 5px 10px; border-radius: 999px; background: var(--green-soft); color: var(--green); font-weight: 700; white-space: nowrap; }
     .day-tabs {
+      position: sticky;
+      top: 58px;
+      z-index: 20;
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding: 18px 2px 5px;
+      padding: 10px 2px 12px;
+      border-bottom: 1px solid rgba(42, 48, 42, .08);
+      background: rgba(243, 242, 238, .9);
+      backdrop-filter: blur(16px);
+      overscroll-behavior-inline: contain;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
     .day-tabs::-webkit-scrollbar { display: none; }
     .day-tab {
@@ -90,7 +92,7 @@
     .day-tab[aria-selected="true"] { background: #20211f; color: #fff; }
     .day-tab[aria-selected="true"] span { color: #d5d8d2; }
     .day-tab:focus-visible, .map-link:focus-visible { outline: 3px solid #92b19a; outline-offset: 3px; }
-    .day-panel { margin-top: 13px; }
+    .day-panel { margin-top: 14px; }
     .day-heading {
       display: flex;
       align-items: end;
@@ -158,8 +160,7 @@
     }
     footer { padding: 20px 4px 0; color: #858780; font-size: 11px; text-align: center; }
     @media (min-width: 560px) {
-      .page { padding-top: 28px; }
-      .intro { padding: 28px 30px 25px; }
+      .page { padding-top: 0; }
       .stop { grid-template-columns: 58px minmax(0, 1fr) 44px; padding-right: 14px; }
       .stop-name { font-size: 16px; }
     }
@@ -168,21 +169,11 @@
 <body>
   <main class="page">
     <header class="topbar" aria-label="公開行程標題列">
-      <span class="top-icon" aria-hidden="true">‹</span>
+      <a class="top-icon" href="../../" aria-label="返回旅程首頁">‹</a>
       <h1>公開行程</h1>
-      <span class="top-icon" aria-hidden="true">⌖</span>
     </header>
 
-    <section class="intro" aria-labelledby="trip-title">
-      <p class="eyebrow">OKAYAMA · OSAKA</p>
-      <h2 class="intro-title" id="trip-title">岡山大阪</h2>
-      <div class="intro-meta">
-        <span>2026/10/18 — 10/24</span>
-        <span class="public-pill">朋友檢視</span>
-      </div>
-    </section>
-
-    <nav class="day-tabs" id="day-tabs" aria-label="行程天數"></nav>
+    <nav class="day-tabs" id="day-tabs" aria-label="行程天數" role="tablist"></nav>
     <section class="day-panel" id="day-panel" aria-live="polite"></section>
     <footer>由 TREK 行程分享</footer>
   </main>
@@ -237,6 +228,7 @@
         const tab = document.createElement("button");
         tab.className = "day-tab";
         tab.type = "button";
+        tab.setAttribute("role", "tab");
         tab.setAttribute("aria-selected", String(day.number === activeNumber));
         tab.setAttribute("aria-controls", "day-panel");
         tab.innerHTML = `<strong>第${day.number}天</strong><span>${dateLabel(day.date)}</span>`;
@@ -246,6 +238,8 @@
         });
         tabs.append(tab);
       }
+      const activeTab = tabs.querySelector('[aria-selected="true"]');
+      activeTab?.scrollIntoView({ block: "nearest", inline: "center" });
     }
 
     function render(activeNumber) {
